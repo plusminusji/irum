@@ -60,7 +60,7 @@ def main():
     )
 
     # 인증 상태 확인
-    if not st.experimental_user.is_logged_in:
+    if not st.session_state.get("authenticated", False):
         st.markdown(
             """
             <style>
@@ -116,10 +116,11 @@ def main():
     # 메인 컨텐츠
     if selected == "대시보드":
         st.title("대시보드")
-        st.write(f"환영합니다, {st.experimental_user.email}님!")
+        st.write(f"환영합니다, {st.session_state.get('email', '사용자')}님!")
         st.write("대시보드 기능은 준비 중입니다.")
         if st.button("로그아웃", type="secondary"):
-            st.logout()
+            st.session_state.authenticated = False
+            st.rerun()
     elif selected == "이력 관리":
         show_profile_management()
     elif selected == "공고 관리":
